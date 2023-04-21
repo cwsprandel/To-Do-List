@@ -41,7 +41,7 @@ body {
 .todoItemsContainer {
     display: flex;
     flex-direction: column;
-    row-gap: 5px;
+    row-gap: 8px;
     padding-left: 10px;
     padding-right: 10px;
 }
