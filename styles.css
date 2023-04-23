@@ -20,7 +20,7 @@ body {
 }
 
 .sidebar {
-    background-color: rgba(255, 98, 0, 0.5);
+    background-color: rgba(255, 96, 0, 0.5);
     display: grid;
     grid-row: 2 / 21;
     grid-column: 1 / 2;
@@ -34,8 +34,26 @@ body {
 }
 
 .todoAreaHeader {
+    align-items: center;
     display: grid;
     grid-row: 1 / 2;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+#addNewToDoItem {
+    background-color: rgba(255, 96, 0, 0.75);
+    margin-right: 1.75rem;
+    width: 10rem;
+    justify-self: end;
+    border-radius: 12px;
+    box-shadow: none;
+    font-size: 1rem;
+    height: 65%;
+}
+
+#addNewToDoItem:hover {
+    cursor: pointer;
 }
 
 .todoItemsContainer {
