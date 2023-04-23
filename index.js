@@ -1,16 +1,12 @@
-const newToDoButton = document.getElementById("addNewToDoItem")
-newToDoButton.addEventListener("click", () => {
-    newToDoItem();
-})
-
 const newToDoItem = () => {
     const todoItemsContainer = document.getElementById("todoItemsContainer");
 
     const todoItem = document.createElement("div");
     todoItem.setAttribute("class", "todoItems");
 
-    const todoCheckbox = document.createElement("div");
+    const todoCheckbox = document.createElement("button");
     todoCheckbox.setAttribute("class", "todoCheckbox");
+    //todoCheckbox.setAttribute("onclick", )
 
     const todoTitle = document.createElement("div");
     todoTitle.setAttribute("class", "todoTitle");
@@ -73,3 +69,12 @@ const newToDoItem = () => {
     todoItem.appendChild(todoDelete);
     todoItemsContainer.appendChild(todoItem);
 }
+
+const selectCheckbox = () => {
+    console.log("hello world");
+}
+
+const newToDoButton = document.getElementById("addNewToDoItem")
+newToDoButton.addEventListener("click", () => {
+    newToDoItem();
+})

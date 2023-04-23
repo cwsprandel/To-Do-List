@@ -52,7 +52,7 @@ body {
     height: 65%;
 }
 
-#addNewToDoItem:hover {
+button:hover {
     cursor: pointer;
 }
 
@@ -82,6 +82,8 @@ body {
     grid-area: checkbox;
     align-self: center;
     justify-self: center;
+    background: none;
+    border: none;
 }
 
 .todoTitle {
