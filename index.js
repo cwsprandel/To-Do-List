@@ -1,3 +1,14 @@
+// add todoLogic
+    //edit
+    //delete
+    //add new (submit)
+    //check/uncheck
+//add todoScreen
+    //render
+    //
+
+const todoArray = [];
+
 const newToDoItem = () => {
     const todoItemsContainer = document.getElementById("todoItemsContainer");
 
