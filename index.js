@@ -7,29 +7,77 @@
     //render
     //
 
-const todoArray = [];
+const todoObjectOne = {title: "Title One", description: "Description One", date: "4/29/2023"}
+const todoObjectTwo = {title: "Title Two", description: "Description Two", date: "4/27/2023"}
+const todoArray = [todoObjectOne, todoObjectTwo];
+localStorage.setItem("todos", JSON.stringify(todoArray));
 
-const newToDoItem = () => {
-    const todoItemsContainer = document.getElementById("todoItemsContainer");
+const todoItemsContainer = document.getElementById("todoItemsContainer");
+
+
+const todoLogic = (() => {
+
+    let allCurrentToDosArray = [];
+    let currentToDoItems = [];
+
+    const addNewToDoItem = (newToDoDetails) => {
+        //get the current to do tasks and put them into array
+        const allCurrentToDoObjects = JSON.parse(localStorage.getItem("todos"));
+        //below makes sure that there is something in local storage
+        if (allCurrentToDoObjects) {
+            allCurrentToDosArray = allCurrentToDoObjects;
+        }
+        allCurrentToDosArray.push(newToDoDetails);
+        localStorage.setItem("todos",JSON.stringify(allCurrentToDosArray));
+        
+        todoScreen.render();
+    }
+
+    currentToDoItems = JSON.parse(localStorage.getItem("todos"));
+
+    return {
+        addNewToDoItem,
+        currentToDoItems
+    }
+})();
+
+todoScreen = (() => {
+
+    const render = () => {
+        console.log(todoLogic.currentToDoItems);
+
+        for(let todoIndex = 0; todoIndex < todoLogic.currentToDoItems.length; todoIndex++){
+            console.log(todoLogic.currentToDoItems[todoIndex]);
+        }
+    }
+
+    return {
+        render
+    }
+})();
+
+
+
+
+const newToDoItem = (todoObject) => {
 
     const todoItem = document.createElement("div");
     todoItem.setAttribute("class", "todoItems");
 
     const todoCheckbox = document.createElement("button");
     todoCheckbox.setAttribute("class", "todoCheckbox");
-    //todoCheckbox.setAttribute("onclick", )
 
     const todoTitle = document.createElement("div");
     todoTitle.setAttribute("class", "todoTitle");
-    todoTitle.textContent = "title";
+    todoTitle.textContent = todoObject.title;
 
     const todoDescription = document.createElement("div");
     todoDescription.setAttribute("class", "todoDescription");
-    todoDescription.textContent = "description";
+    todoDescription.textContent = todoObject.description;
 
     const todoDueDate = document.createElement("div");
     todoDueDate.setAttribute("class", "todoDueDate");
-    todoDueDate.textContent = "due date";
+    todoDueDate.textContent = todoObject.date;
 
     const todoPriority = document.createElement("div");
     todoPriority.setAttribute("class", "todoPriority");
@@ -81,11 +129,17 @@ const newToDoItem = () => {
     todoItemsContainer.appendChild(todoItem);
 }
 
+
 const selectCheckbox = () => {
     console.log("hello world");
 }
 
-const newToDoButton = document.getElementById("addNewToDoItem")
+const newToDoButton = document.getElementById("addNewToDoItemButton")
 newToDoButton.addEventListener("click", () => {
-    newToDoItem();
+    //newToDoItem();
+    //console.log(localStorage.testKey);
+    const todoObjectThree = {title: "Title Three", description: "Description Three", date: "4/30/2023"};
+    todoLogic.addNewToDoItem(todoObjectThree);
+    //const todoForm = document.getElementById("addNewToDoItemForm");
+    //todoForm.style.display = "block";
 })
