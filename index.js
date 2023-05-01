@@ -1,7 +1,7 @@
 // add todoLogic
     //edit
-    //delete
-    //add new (submit)
+        //delete
+        //add new (submit)
     //check/uncheck
 //add todoScreen
     //render
@@ -17,43 +17,39 @@ const todoItemsContainer = document.getElementById("todoItemsContainer");
 
 const todoLogic = (() => {
 
-    let allCurrentToDosArray = [];
+    let updatedToDoArray = JSON.parse(localStorage.getItem("todos"));
 
     const addNewToDoItem = (newToDoDetails) => {
-        //get the current to do tasks and put them into array
-        let allCurrentToDoObjects = JSON.parse(localStorage.getItem("todos"));
-        //below makes sure that there is something in local storage
-        if (allCurrentToDoObjects) {
-            allCurrentToDosArray = allCurrentToDoObjects;
+        //below makes sure that there is something in local storage before trying to add a new item
+        if (updatedToDoArray) {
+            updatedToDoArray.push(newToDoDetails);
+            localStorage.setItem("todos",JSON.stringify(updatedToDoArray));
+            
+            todoScreen.render();
         }
-        allCurrentToDosArray.push(newToDoDetails);
-        localStorage.setItem("todos",JSON.stringify(allCurrentToDosArray));
-        
-        todoScreen.render();
     }
 
     const deleteSelectedToDoItem = (todoIndexPosition) => {
-        let allCurrentToDosArray = JSON.parse(localStorage.getItem("todos"));
-        allCurrentToDosArray.splice(todoIndexPosition,1);
-        localStorage.setItem("todos",JSON.stringify(allCurrentToDosArray));
+        updatedToDoArray.splice(todoIndexPosition,1);
+        localStorage.setItem("todos",JSON.stringify(updatedToDoArray));
 
         todoScreen.render();
     }
 
     return {
         addNewToDoItem,
-        deleteSelectedToDoItem
+        deleteSelectedToDoItem,
+        updatedToDoArray
     }
 })();
 
 todoScreen = (() => {
 
     const render = () => {
-        let currentToDoItems = JSON.parse(localStorage.getItem("todos"));
         todoItemsContainer.innerHTML = "";
 
-        for(let todoIndex = 0; todoIndex < currentToDoItems.length; todoIndex++){
-            newToDoItem(currentToDoItems[todoIndex], todoIndex);
+        for(let todoIndex = 0; todoIndex < todoLogic.updatedToDoArray.length; todoIndex++){
+            newToDoItem(todoLogic.updatedToDoArray[todoIndex], todoIndex);
         }
     }
 
@@ -86,8 +82,7 @@ todoScreen = (() => {
     //change div to button, same as checkbox
         const todoEdit = document.createElement("div");
         todoEdit.setAttribute("class", "todoEdit");
-        //creating the to do Delete container
-    //change div to button, same as checkbox
+        //creating the to do Delete container and setting the function to delete task
         const todoDelete = document.createElement("button");
         todoDelete.setAttribute("class", "todoDelete");
         todoDelete.onclick = function () {
