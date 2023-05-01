@@ -115,6 +115,8 @@ button:hover {
     grid-area: delete;
     align-self: center;
     justify-self: center;
+    background: none;
+    border: none;
 }
 
 #addNewToDoItemForm {

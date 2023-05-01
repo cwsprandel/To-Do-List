@@ -32,8 +32,17 @@ const todoLogic = (() => {
         todoScreen.render();
     }
 
+    const deleteSelectedToDoItem = (todoIndexPosition) => {
+        let allCurrentToDosArray = JSON.parse(localStorage.getItem("todos"));
+        allCurrentToDosArray.splice(todoIndexPosition,1);
+        localStorage.setItem("todos",JSON.stringify(allCurrentToDosArray));
+
+        todoScreen.render();
+    }
+
     return {
-        addNewToDoItem
+        addNewToDoItem,
+        deleteSelectedToDoItem
     }
 })();
 
@@ -44,11 +53,11 @@ todoScreen = (() => {
         todoItemsContainer.innerHTML = "";
 
         for(let todoIndex = 0; todoIndex < currentToDoItems.length; todoIndex++){
-            newToDoItem(currentToDoItems[todoIndex]);
+            newToDoItem(currentToDoItems[todoIndex], todoIndex);
         }
     }
 
-    const newToDoItem = (todoObject) => {
+    const newToDoItem = (todoObject, indexPosition) => {
         //creating the to do task container
         const todoItem = document.createElement("div");
         todoItem.setAttribute("class", "todoItems");
@@ -79,8 +88,11 @@ todoScreen = (() => {
         todoEdit.setAttribute("class", "todoEdit");
         //creating the to do Delete container
     //change div to button, same as checkbox
-        const todoDelete = document.createElement("div");
+        const todoDelete = document.createElement("button");
         todoDelete.setAttribute("class", "todoDelete");
+        todoDelete.onclick = function () {
+            todoLogic.deleteSelectedToDoItem(indexPosition);
+        };
         //creating and setting the checkbox SVG
         const emptyCheckboxSVG = document.createElementNS("http://www.w3.org/2000/svg","svg");
         emptyCheckboxSVG.setAttribute("height", "24px");
