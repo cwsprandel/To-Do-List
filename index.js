@@ -1,21 +1,22 @@
 // add todoLogic
-    //edit
+    //edit (maybe just pop up the same New To Do Form and populate with current info from localstorage, and then resubmit??)
         //delete
         //add new (submit)
     //check/uncheck
 //add todoScreen
     //render
-    //
+    //create all DOM elements (called by render)
 
+//add a project property
+//add a priority property
 
-    //add a project property
-const todoObjectOne = {title: "Title One", description: "Description One", date: "4/29/2023", completed: true}
-const todoObjectTwo = {title: "Title Two", description: "Description Two", date: "4/27/2023", completed: false}
-const todoArray = [todoObjectOne, todoObjectTwo];
-localStorage.setItem("todos", JSON.stringify(todoArray));
+    //below are just some test data to trial the logic
+    const todoObjectOne = {title: "Title One", description: "Description One", date: "4/29/2023", completed: true}
+    const todoObjectTwo = {title: "Title Two", description: "Description Two", date: "4/27/2023", completed: false}
+    const todoArray = [todoObjectOne, todoObjectTwo];
+    localStorage.setItem("todos", JSON.stringify(todoArray));
 
 const todoItemsContainer = document.getElementById("todoItemsContainer");
-
 
 const todoLogic = (() => {
 
@@ -59,11 +60,11 @@ todoScreen = (() => {
         todoItemsContainer.innerHTML = "";
 
         for(let todoIndex = 0; todoIndex < todoLogic.updatedToDoArray.length; todoIndex++){
-            newToDoItem(todoLogic.updatedToDoArray[todoIndex], todoIndex);
+            createToDoItem(todoLogic.updatedToDoArray[todoIndex], todoIndex);
         }
     }
 
-    const newToDoItem = (todoObject, indexPosition) => {
+    const createToDoItem = (todoObject, indexPosition) => {
         //creating the to do task container
         const todoItem = document.createElement("div");
         todoItem.setAttribute("class", "todoItems");
