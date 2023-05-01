@@ -153,17 +153,12 @@ todoScreen = (() => {
     }
 })();
 
-
-const selectCheckbox = () => {
-    console.log("hello world");
-}
-
+//This is the button to add new to do items 
+//need to get it to unveil the new to do form 
+//create new button (on the form) to execute the following code and transfer all the user inputs 
+    //remember the user form validation lesson to make sure everything is correct before submitting
 const newToDoButton = document.getElementById("addNewToDoItemButton")
 newToDoButton.addEventListener("click", () => {
-    //newToDoItem();
-    //console.log(localStorage.testKey);
     const todoObjectThree = {title: "Title Three", description: "Description Three", date: "4/30/2023", completed: true};
     todoLogic.addNewToDoItem(todoObjectThree);
-    //const todoForm = document.getElementById("addNewToDoItemForm");
-    //todoForm.style.display = "block";
 })
