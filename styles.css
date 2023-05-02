@@ -121,6 +121,9 @@ button:hover {
 
 #addNewToDoItemForm {
     position: absolute;
+    grid-template-columns: 10em 1fr;
+    grid-template-rows: repeat(6, 3em);
+    gap: 0.5em 0.5em;
     display: none;
     top: 15%;
     left: 25%;
@@ -129,4 +132,27 @@ button:hover {
     border-radius: 1em;
     box-shadow: 5px 5px 10px rgb(87, 87, 87);
     background-color: rgb(154, 154, 154);
+    padding: 0.5em;
+    padding-top: 2em;
+    padding-bottom: 1em;
+}
+
+#addNewToDoItemForm label {
+    justify-self: end;
+    align-self: baseline;
+}
+
+#addNewToDoItemForm input, select {
+    align-self: baseline;
+    height: 2em;
+}
+
+#todoItemDueDate {
+    width: 8em;
+}
+
+#addToDoSubmitButton {
+    grid-column-end: span 2;
+    width: 12em;
+    justify-self: center;
 }

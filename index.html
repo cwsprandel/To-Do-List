@@ -64,18 +64,33 @@
     </div>
 
     <div id="addNewToDoItemForm">
-        <select>
+        <label for="todoItemProject">Select Project Category:</label>    
+        <select id="todoItemProject">
             <option value="">-- Choose a Project --</option>
-            <option value="Project 1">Project 1</option>
-            <option value="Project 2">Project 2</option>
-            <option value="Project 3">Project 3</option>
+            <option value="Home">Home</option>
+            <option value="Work">Work</option>
+            <option value="Travel">Travel</option>
         </select>
-        <input type="text" placeholder="Title">
-        <input type="text" placeholder="Description">
-        <input type="number" placeholder="Priority">
-        <input type="date">
-        <button class="submitNewToDoButton" onclick="addNewToDoItem()">
-            submit
+        
+        <label for="todoItemPriority">Select Task Priority:</label>
+        <select id="todoItemPriority">
+            <option value="">-- Choose a Priority --</option>
+            <option value="1">1 (high)</option>
+            <option value="2">2</option>
+            <option value="3">3 (low)</option>
+        </select>
+
+        <label for="todoItemTitle">Task Title:</label>
+        <input id="todoItemTitle" type="text" placeholder="Title">
+
+        <label for="todoItemDescription">Task Description:</label>
+        <input id="todoItemDescription" type="text" placeholder="Description">
+        
+        <label for="todoItemDueDate">Task Due Date:</label>
+        <input id="todoItemDueDate" type="date">
+        
+        <button id="addToDoSubmitButton">
+            Submit
         </button>
     </div>
 

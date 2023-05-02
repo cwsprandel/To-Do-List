@@ -11,8 +11,8 @@
 //add a priority property
 
     //below are just some test data to trial the logic
-    const todoObjectOne = {title: "Title One", description: "Description One", date: "4/29/2023", completed: true}
-    const todoObjectTwo = {title: "Title Two", description: "Description Two", date: "4/27/2023", completed: false}
+    const todoObjectOne = {title: "Title One", description: "Description One", date: "4/29/2023", completed: true, project: "Project 1", priority: "2"}
+    const todoObjectTwo = {title: "Title Two", description: "Description Two", date: "4/27/2023", completed: false, project: "Project 1", priority: "3"}
     const todoArray = [todoObjectOne, todoObjectTwo];
     localStorage.setItem("todos", JSON.stringify(todoArray));
 
@@ -158,8 +158,40 @@ todoScreen = (() => {
 //need to get it to unveil the new to do form 
 //create new button (on the form) to execute the following code and transfer all the user inputs 
     //remember the user form validation lesson to make sure everything is correct before submitting
-const newToDoButton = document.getElementById("addNewToDoItemButton")
+
+const newToDoItemForm = document.getElementById("addNewToDoItemForm");
+const newToDoButton = document.getElementById("addNewToDoItemButton");
 newToDoButton.addEventListener("click", () => {
-    const todoObjectThree = {title: "Title Three", description: "Description Three", date: "4/30/2023", completed: true};
+    const todoObjectThree = {title: "Title Three", description: "Description Three", date: "4/30/2023", completed: true, project: "Project 2", priority: "3"};
     todoLogic.addNewToDoItem(todoObjectThree);
+
+    //the code below brings up the form to add a to do item
+    newToDoItemForm.style.display = "grid";
+})
+
+const addNewToDoItemFormSubmitButton = document.getElementById("addToDoSubmitButton");
+addNewToDoItemFormSubmitButton.addEventListener("click", () => {
+    let newToDoItemInformation = {};
+
+    let titleElement = document.getElementById("todoItemTitle");
+    let descriptionElement = document.getElementById("todoItemDescription");
+    let dateElement = document.getElementById("todoItemDueDate");
+    let projectElement = document.getElementById("todoItemProject");
+    let priorityElement = document.getElementById("todoItemPriority");
+    
+    newToDoItemInformation.title = titleElement.value;
+    newToDoItemInformation.description = descriptionElement.value;
+    newToDoItemInformation.date = dateElement.value;
+    newToDoItemInformation.completed = false;
+    newToDoItemInformation.project = projectElement.value;
+    newToDoItemInformation.priority = priorityElement.value;
+
+    todoLogic.addNewToDoItem(newToDoItemInformation);
+
+    titleElement.value = "";
+    descriptionElement.value = "";
+    dateElement.value = "";
+    projectElement.value = "";
+    priorityElement.value = "";
+    newToDoItemForm.style.display = "none";
 })
