@@ -108,6 +108,8 @@ button:hover {
     grid-area: edit;
     align-self: center;
     justify-self: end;
+    background: none;
+    border: none;
 }
 
 .todoDelete {
@@ -152,7 +154,11 @@ button:hover {
 }
 
 #addToDoSubmitButton {
-    grid-column-end: span 2;
     width: 12em;
-    justify-self: center;
+    justify-self: right;
+}
+
+#addToDoCancelButton {
+    width: 12em;
+    justify-self: left;
 }

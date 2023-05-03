@@ -64,6 +64,23 @@ todoScreen = (() => {
         }
     }
 
+    const updateToDoForm = (todoIndex) => {
+        //pass object into formula, open form, and set value to value of object
+        let titleElement = document.getElementById("todoItemTitle");
+        let descriptionElement = document.getElementById("todoItemDescription");
+        let dateElement = document.getElementById("todoItemDueDate");
+        let projectElement = document.getElementById("todoItemProject");
+        let priorityElement = document.getElementById("todoItemPriority");
+
+        titleElement.value = todoLogic.updatedToDoArray[todoIndex].title;
+        descriptionElement.value = todoLogic.updatedToDoArray[todoIndex].description;
+        dateElement.value = todoLogic.updatedToDoArray[todoIndex].date;
+        projectElement.value = todoLogic.updatedToDoArray[todoIndex].project;
+        priorityElement.value = todoLogic.updatedToDoArray[todoIndex].priority;
+
+        newToDoItemForm.style.display = "grid";
+    }
+
     const createToDoItem = (todoObject, indexPosition) => {
         //creating the to do task container
         const todoItem = document.createElement("div");
@@ -94,8 +111,11 @@ todoScreen = (() => {
         todoPriority.textContent = "priority";
         //creating the to do Edit container
     //change div to button, same as checkbox
-        const todoEdit = document.createElement("div");
+        const todoEdit = document.createElement("button");
         todoEdit.setAttribute("class", "todoEdit");
+        todoEdit.onclick = function () {
+            updateToDoForm(indexPosition);
+        }
         //creating the to do Delete container and setting the function to delete task
         const todoDelete = document.createElement("button");
         todoDelete.setAttribute("class", "todoDelete");
@@ -149,8 +169,25 @@ todoScreen = (() => {
         todoItemsContainer.appendChild(todoItem);
     }
 
+    const closeToDoForm = () => {
+        let titleElement = document.getElementById("todoItemTitle");
+        let descriptionElement = document.getElementById("todoItemDescription");
+        let dateElement = document.getElementById("todoItemDueDate");
+        let projectElement = document.getElementById("todoItemProject");
+        let priorityElement = document.getElementById("todoItemPriority");
+
+        titleElement.value = "";
+        descriptionElement.value = "";
+        dateElement.value = "";
+        projectElement.value = "";
+        priorityElement.value = "";
+
+        newToDoItemForm.style.display = "none";
+    }
+
     return {
-        render
+        render,
+        closeToDoForm
     }
 })();
 
@@ -178,20 +215,32 @@ addNewToDoItemFormSubmitButton.addEventListener("click", () => {
     let dateElement = document.getElementById("todoItemDueDate");
     let projectElement = document.getElementById("todoItemProject");
     let priorityElement = document.getElementById("todoItemPriority");
+
+    let titleValue = titleElement.value;
+    let descriptionValue = descriptionElement.value;
+    let dateValue = dateElement.value;
+    let projectValue = projectElement.value;
+    let priorityValue = priorityElement.value;
     
-    newToDoItemInformation.title = titleElement.value;
-    newToDoItemInformation.description = descriptionElement.value;
-    newToDoItemInformation.date = dateElement.value;
-    newToDoItemInformation.completed = false;
-    newToDoItemInformation.project = projectElement.value;
-    newToDoItemInformation.priority = priorityElement.value;
+    if (titleValue && descriptionValue && dateValue && projectValue && priorityValue) {
+        newToDoItemInformation.title = titleValue;
+        newToDoItemInformation.description = descriptionValue;
+        newToDoItemInformation.date = dateValue;
+        newToDoItemInformation.completed = false;
+        newToDoItemInformation.project = projectValue;
+        newToDoItemInformation.priority = priorityValue;
+    
+        todoLogic.addNewToDoItem(newToDoItemInformation);
 
-    todoLogic.addNewToDoItem(newToDoItemInformation);
+        console.log("success");
+    } else {
+        console.log("not all true");
+    }
 
-    titleElement.value = "";
-    descriptionElement.value = "";
-    dateElement.value = "";
-    projectElement.value = "";
-    priorityElement.value = "";
-    newToDoItemForm.style.display = "none";
+    todoScreen.closeToDoForm();
+})
+
+const todoItemFormCancelButton = document.getElementById("addToDoCancelButton");
+todoItemFormCancelButton.addEventListener("click", () => {
+    todoScreen.closeToDoForm();
 })
