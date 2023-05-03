@@ -17,16 +17,26 @@
     localStorage.setItem("todos", JSON.stringify(todoArray));
 
 const todoItemsContainer = document.getElementById("todoItemsContainer");
+let titleElement = document.getElementById("todoItemTitle");
+let descriptionElement = document.getElementById("todoItemDescription");
+let dateElement = document.getElementById("todoItemDueDate");
+let projectElement = document.getElementById("todoItemProject");
+let priorityElement = document.getElementById("todoItemPriority");
 
 const todoLogic = (() => {
 
     let updatedToDoArray = JSON.parse(localStorage.getItem("todos"));
 
+    const updatingToDoArray = (changedToDoArray) => {
+        localStorage.setItem("todos",JSON.stringify(changedToDoArray));
+    }
+
     const addNewToDoItem = (newToDoDetails) => {
         //below makes sure that there is something in local storage before trying to add a new item
         if (updatedToDoArray) {
             updatedToDoArray.push(newToDoDetails);
-            localStorage.setItem("todos",JSON.stringify(updatedToDoArray));
+            
+            updatingToDoArray(updatedToDoArray);
             
             todoScreen.render();
         }
@@ -34,14 +44,16 @@ const todoLogic = (() => {
 
     const deleteSelectedToDoItem = (todoIndexPosition) => {
         updatedToDoArray.splice(todoIndexPosition,1);
-        localStorage.setItem("todos",JSON.stringify(updatedToDoArray));
+        
+        updatingToDoArray(updatedToDoArray);
 
         todoScreen.render();
     }
 
     const updateToDoStatus = (todoIndexPosition) => {
         updatedToDoArray[todoIndexPosition].completed = !updatedToDoArray[todoIndexPosition].completed
-        localStorage.setItem("todos", JSON.stringify(updatedToDoArray));
+        
+        updatingToDoArray(updatedToDoArray);
 
         todoScreen.render();
     }
@@ -66,11 +78,6 @@ todoScreen = (() => {
 
     const updateToDoForm = (todoIndex) => {
         //pass object into formula, open form, and set value to value of object
-        let titleElement = document.getElementById("todoItemTitle");
-        let descriptionElement = document.getElementById("todoItemDescription");
-        let dateElement = document.getElementById("todoItemDueDate");
-        let projectElement = document.getElementById("todoItemProject");
-        let priorityElement = document.getElementById("todoItemPriority");
 
         titleElement.value = todoLogic.updatedToDoArray[todoIndex].title;
         descriptionElement.value = todoLogic.updatedToDoArray[todoIndex].description;
@@ -104,13 +111,10 @@ todoScreen = (() => {
         todoDueDate.setAttribute("class", "todoDueDate");
         todoDueDate.textContent = todoObject.date;
         //creating the to do Priority 
-    //need to get object priority 
-    //need to set to object priority
         const todoPriority = document.createElement("div");
         todoPriority.setAttribute("class", "todoPriority");
-        todoPriority.textContent = "priority";
+        todoPriority.textContent = "Priority: " + todoObject.priority;
         //creating the to do Edit container
-    //change div to button, same as checkbox
         const todoEdit = document.createElement("button");
         todoEdit.setAttribute("class", "todoEdit");
         todoEdit.onclick = function () {
@@ -170,12 +174,6 @@ todoScreen = (() => {
     }
 
     const closeToDoForm = () => {
-        let titleElement = document.getElementById("todoItemTitle");
-        let descriptionElement = document.getElementById("todoItemDescription");
-        let dateElement = document.getElementById("todoItemDueDate");
-        let projectElement = document.getElementById("todoItemProject");
-        let priorityElement = document.getElementById("todoItemPriority");
-
         titleElement.value = "";
         descriptionElement.value = "";
         dateElement.value = "";
@@ -191,10 +189,6 @@ todoScreen = (() => {
     }
 })();
 
-//This is the button to add new to do items 
-//need to get it to unveil the new to do form 
-//create new button (on the form) to execute the following code and transfer all the user inputs 
-    //remember the user form validation lesson to make sure everything is correct before submitting
 
 const newToDoItemForm = document.getElementById("addNewToDoItemForm");
 const newToDoButton = document.getElementById("addNewToDoItemButton");
@@ -209,12 +203,6 @@ newToDoButton.addEventListener("click", () => {
 const addNewToDoItemFormSubmitButton = document.getElementById("addToDoSubmitButton");
 addNewToDoItemFormSubmitButton.addEventListener("click", () => {
     let newToDoItemInformation = {};
-
-    let titleElement = document.getElementById("todoItemTitle");
-    let descriptionElement = document.getElementById("todoItemDescription");
-    let dateElement = document.getElementById("todoItemDueDate");
-    let projectElement = document.getElementById("todoItemProject");
-    let priorityElement = document.getElementById("todoItemPriority");
 
     let titleValue = titleElement.value;
     let descriptionValue = descriptionElement.value;
@@ -244,3 +232,8 @@ const todoItemFormCancelButton = document.getElementById("addToDoCancelButton");
 todoItemFormCancelButton.addEventListener("click", () => {
     todoScreen.closeToDoForm();
 })
+
+
+//maybe make form elements global variables?
+//fix logic for submitting form when updating task
+//
