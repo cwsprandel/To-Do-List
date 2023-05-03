@@ -11,12 +11,13 @@
 //add a priority property
 
     //below are just some test data to trial the logic
-    const todoObjectOne = {title: "Title One", description: "Description One", date: "4/29/2023", completed: true, project: "Project 1", priority: "2"}
-    const todoObjectTwo = {title: "Title Two", description: "Description Two", date: "4/27/2023", completed: false, project: "Project 1", priority: "3"}
+    const todoObjectOne = {title: "Title One", description: "Description One", date: "2023-04-27", completed: true, project: "Home", priority: "2"}
+    const todoObjectTwo = {title: "Title Two", description: "Description Two", date: "2023-04-29", completed: false, project: "Work", priority: "3"}
     const todoArray = [todoObjectOne, todoObjectTwo];
     localStorage.setItem("todos", JSON.stringify(todoArray));
 
 const todoItemsContainer = document.getElementById("todoItemsContainer");
+const newToDoItemForm = document.getElementById("addNewToDoItemForm");
 let titleElement = document.getElementById("todoItemTitle");
 let descriptionElement = document.getElementById("todoItemDescription");
 let dateElement = document.getElementById("todoItemDueDate");
@@ -29,6 +30,14 @@ const todoLogic = (() => {
 
     const updatingToDoArray = (changedToDoArray) => {
         localStorage.setItem("todos",JSON.stringify(changedToDoArray));
+        todoScreen.render();
+    }
+
+    const updateObjectinArray = (todoIndex, updatedObject) => {
+        updatedToDoArray[todoIndex] = updatedObject;
+
+        todoScreen.closeToDoForm();
+        updatingToDoArray(updatedToDoArray);
     }
 
     const addNewToDoItem = (newToDoDetails) => {
@@ -36,9 +45,8 @@ const todoLogic = (() => {
         if (updatedToDoArray) {
             updatedToDoArray.push(newToDoDetails);
             
+            todoScreen.closeToDoForm();
             updatingToDoArray(updatedToDoArray);
-            
-            todoScreen.render();
         }
     }
 
@@ -46,22 +54,19 @@ const todoLogic = (() => {
         updatedToDoArray.splice(todoIndexPosition,1);
         
         updatingToDoArray(updatedToDoArray);
-
-        todoScreen.render();
     }
 
     const updateToDoStatus = (todoIndexPosition) => {
         updatedToDoArray[todoIndexPosition].completed = !updatedToDoArray[todoIndexPosition].completed
         
         updatingToDoArray(updatedToDoArray);
-
-        todoScreen.render();
     }
 
     return {
         addNewToDoItem,
         deleteSelectedToDoItem,
         updateToDoStatus,
+        updateObjectinArray,
         updatedToDoArray
     }
 })();
@@ -76,6 +81,7 @@ todoScreen = (() => {
         }
     }
 
+    //get rid of this after getting openEditToDoFrom function
     const updateToDoForm = (todoIndex) => {
         //pass object into formula, open form, and set value to value of object
 
@@ -85,7 +91,7 @@ todoScreen = (() => {
         projectElement.value = todoLogic.updatedToDoArray[todoIndex].project;
         priorityElement.value = todoLogic.updatedToDoArray[todoIndex].priority;
 
-        newToDoItemForm.style.display = "grid";
+        openToDoForm(todoIndex);
     }
 
     const createToDoItem = (todoObject, indexPosition) => {
@@ -173,6 +179,55 @@ todoScreen = (() => {
         todoItemsContainer.appendChild(todoItem);
     }
 
+
+    //need to get all projects being used to add to dropdown (select)
+    const openToDoForm = (submitLogic) => {
+        const addNewToDoItemFormSubmitButton = document.getElementById("addToDoSubmitButton");
+
+        if (submitLogic == "new") {
+            addNewToDoItemFormSubmitButton.onclick = () => {
+                let newToDoItemInformation = {};
+                let titleValue = titleElement.value;
+                let descriptionValue = descriptionElement.value;
+                let dateValue = dateElement.value;
+                let projectValue = projectElement.value;
+                let priorityValue = priorityElement.value;
+
+                if (titleValue && descriptionValue && dateValue && projectValue && priorityValue) {
+                    newToDoItemInformation.title = titleValue;
+                    newToDoItemInformation.description = descriptionValue;
+                    newToDoItemInformation.date = dateValue;
+                    newToDoItemInformation.completed = false;
+                    newToDoItemInformation.project = projectValue;
+                    newToDoItemInformation.priority = priorityValue;
+                
+                    todoLogic.addNewToDoItem(newToDoItemInformation); 
+                } 
+            }
+        } else {
+            addNewToDoItemFormSubmitButton.onclick = () => {
+                let newToDoItemInformation = {};
+                let titleValue = titleElement.value;
+                let descriptionValue = descriptionElement.value;
+                let dateValue = dateElement.value;
+                let projectValue = projectElement.value;
+                let priorityValue = priorityElement.value;
+    
+                if (titleValue && descriptionValue && dateValue && projectValue && priorityValue) {
+                    newToDoItemInformation.title = titleValue;
+                    newToDoItemInformation.description = descriptionValue;
+                    newToDoItemInformation.date = dateValue;
+                    newToDoItemInformation.completed = false;
+                    newToDoItemInformation.project = projectValue;
+                    newToDoItemInformation.priority = priorityValue;
+                
+                    todoLogic.updateObjectinArray(submitLogic, newToDoItemInformation);
+                } 
+            }
+        }
+        newToDoItemForm.style.display = "grid";
+    }
+
     const closeToDoForm = () => {
         titleElement.value = "";
         descriptionElement.value = "";
@@ -185,48 +240,46 @@ todoScreen = (() => {
 
     return {
         render,
-        closeToDoForm
+        closeToDoForm,
+        openToDoForm
     }
 })();
 
 
-const newToDoItemForm = document.getElementById("addNewToDoItemForm");
 const newToDoButton = document.getElementById("addNewToDoItemButton");
 newToDoButton.addEventListener("click", () => {
-    const todoObjectThree = {title: "Title Three", description: "Description Three", date: "4/30/2023", completed: true, project: "Project 2", priority: "3"};
-    todoLogic.addNewToDoItem(todoObjectThree);
-
     //the code below brings up the form to add a to do item
-    newToDoItemForm.style.display = "grid";
+    todoScreen.openToDoForm("new");
 })
 
-const addNewToDoItemFormSubmitButton = document.getElementById("addToDoSubmitButton");
-addNewToDoItemFormSubmitButton.addEventListener("click", () => {
-    let newToDoItemInformation = {};
+        // //can get rid of this after getting function for opening new or editing form working
+        // const addNewToDoItemFormSubmitButton = document.getElementById("addToDoSubmitButton");
+        // addNewToDoItemFormSubmitButton.addEventListener("click", () => {
+        //     let newToDoItemInformation = {};
 
-    let titleValue = titleElement.value;
-    let descriptionValue = descriptionElement.value;
-    let dateValue = dateElement.value;
-    let projectValue = projectElement.value;
-    let priorityValue = priorityElement.value;
-    
-    if (titleValue && descriptionValue && dateValue && projectValue && priorityValue) {
-        newToDoItemInformation.title = titleValue;
-        newToDoItemInformation.description = descriptionValue;
-        newToDoItemInformation.date = dateValue;
-        newToDoItemInformation.completed = false;
-        newToDoItemInformation.project = projectValue;
-        newToDoItemInformation.priority = priorityValue;
-    
-        todoLogic.addNewToDoItem(newToDoItemInformation);
+        //     let titleValue = titleElement.value;
+        //     let descriptionValue = descriptionElement.value;
+        //     let dateValue = dateElement.value;
+        //     let projectValue = projectElement.value;
+        //     let priorityValue = priorityElement.value;
+            
+        //     if (titleValue && descriptionValue && dateValue && projectValue && priorityValue) {
+        //         newToDoItemInformation.title = titleValue;
+        //         newToDoItemInformation.description = descriptionValue;
+        //         newToDoItemInformation.date = dateValue;
+        //         newToDoItemInformation.completed = false;
+        //         newToDoItemInformation.project = projectValue;
+        //         newToDoItemInformation.priority = priorityValue;
+            
+        //         todoLogic.addNewToDoItem(newToDoItemInformation);
 
-        console.log("success");
-    } else {
-        console.log("not all true");
-    }
+        //         console.log("success");
+        //     } else {
+        //         console.log("not all true");
+        //     }
 
-    todoScreen.closeToDoForm();
-})
+        //     todoScreen.closeToDoForm();
+        // })
 
 const todoItemFormCancelButton = document.getElementById("addToDoCancelButton");
 todoItemFormCancelButton.addEventListener("click", () => {
