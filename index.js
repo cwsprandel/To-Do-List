@@ -13,7 +13,10 @@
     //below are just some test data to trial the logic
     const todoObjectOne = {title: "Title One", description: "Description One", date: "2023-04-27", completed: true, project: "Home", priority: "2"}
     const todoObjectTwo = {title: "Title Two", description: "Description Two", date: "2023-04-29", completed: false, project: "Work", priority: "3"}
-    const todoArray = [todoObjectOne, todoObjectTwo];
+    const todoObjectThree = {title: "Title Three", description: "Description Three", date: "2023-04-29", completed: false, project: "Travel", priority: "1"}
+    const todoObjectFour = {title: "Title Four", description: "Description Four", date: "2023-04-29", completed: false, project: "Work", priority: "1"}
+    const todoObjectFive = {title: "Title Five", description: "Description Five", date: "2023-04-29", completed: false, project: "Home", priority: "3"}
+    const todoArray = [todoObjectOne, todoObjectTwo, todoObjectThree, todoObjectFour, todoObjectFive];
     localStorage.setItem("todos", JSON.stringify(todoArray));
 
 const todoItemsContainer = document.getElementById("todoItemsContainer");
@@ -62,12 +65,18 @@ const todoLogic = (() => {
         updatingToDoArray(updatedToDoArray);
     }
 
+    const getCurrentProjects = () => {
+        let listofCurrentProjects = [...new Set(updatedToDoArray.map((item) => item.project))];
+        return(listofCurrentProjects);
+    }
+
     return {
         addNewToDoItem,
         deleteSelectedToDoItem,
         updateToDoStatus,
         updateObjectinArray,
-        updatedToDoArray
+        updatedToDoArray,
+        getCurrentProjects
     }
 })();
 
@@ -184,6 +193,18 @@ todoScreen = (() => {
     const openToDoForm = (submitLogic) => {
         const addNewToDoItemFormSubmitButton = document.getElementById("addToDoSubmitButton");
 
+        //clear and then repopulate the Project Dropdown
+        for (let currentProjectList = (projectElement.options.length - 1); currentProjectList > 0; currentProjectList--) {
+            projectElement.remove(currentProjectList);
+        }
+        for (let projectIndex = 0; projectIndex < todoLogic.getCurrentProjects().length; projectIndex++) {
+            let projectTitle = todoLogic.getCurrentProjects()[projectIndex];
+            let projectOption = document.createElement("option");
+            projectOption.textContent = projectTitle;
+            projectOption.value = projectTitle;
+            projectElement.appendChild(projectOption);
+        }
+
         if (submitLogic == "new") {
             addNewToDoItemFormSubmitButton.onclick = () => {
                 let newToDoItemInformation = {};
@@ -250,43 +271,11 @@ const newToDoButton = document.getElementById("addNewToDoItemButton");
 newToDoButton.addEventListener("click", () => {
     //the code below brings up the form to add a to do item
     todoScreen.openToDoForm("new");
+    todoScreen.render();
 })
-
-        // //can get rid of this after getting function for opening new or editing form working
-        // const addNewToDoItemFormSubmitButton = document.getElementById("addToDoSubmitButton");
-        // addNewToDoItemFormSubmitButton.addEventListener("click", () => {
-        //     let newToDoItemInformation = {};
-
-        //     let titleValue = titleElement.value;
-        //     let descriptionValue = descriptionElement.value;
-        //     let dateValue = dateElement.value;
-        //     let projectValue = projectElement.value;
-        //     let priorityValue = priorityElement.value;
-            
-        //     if (titleValue && descriptionValue && dateValue && projectValue && priorityValue) {
-        //         newToDoItemInformation.title = titleValue;
-        //         newToDoItemInformation.description = descriptionValue;
-        //         newToDoItemInformation.date = dateValue;
-        //         newToDoItemInformation.completed = false;
-        //         newToDoItemInformation.project = projectValue;
-        //         newToDoItemInformation.priority = priorityValue;
-            
-        //         todoLogic.addNewToDoItem(newToDoItemInformation);
-
-        //         console.log("success");
-        //     } else {
-        //         console.log("not all true");
-        //     }
-
-        //     todoScreen.closeToDoForm();
-        // })
 
 const todoItemFormCancelButton = document.getElementById("addToDoCancelButton");
 todoItemFormCancelButton.addEventListener("click", () => {
     todoScreen.closeToDoForm();
 })
 
-
-//maybe make form elements global variables?
-//fix logic for submitting form when updating task
-//
