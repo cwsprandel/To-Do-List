@@ -24,6 +24,18 @@ body {
     display: grid;
     grid-row: 2 / 21;
     grid-column: 1 / 2;
+    justify-content: center;
+}
+
+.sidebar button {
+    height: 2em;
+}
+
+.sidebar input {
+    background: none;
+    width: 95%;
+    border-color:rgb(69, 69, 69);
+    border-radius: 5px;
 }
 
 .todoArea {

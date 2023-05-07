@@ -18,6 +18,8 @@
     const todoObjectFive = {title: "Title Five", description: "Description Five", date: "2023-04-29", completed: false, project: "Home", priority: "3"}
     const todoArray = [todoObjectOne, todoObjectTwo, todoObjectThree, todoObjectFour, todoObjectFive];
     localStorage.setItem("todos", JSON.stringify(todoArray));
+    const projectArray = ["Home", "Work", "Travel"];
+    localStorage.setItem("projects", JSON.stringify(projectArray));
 
 const todoItemsContainer = document.getElementById("todoItemsContainer");
 const newToDoItemForm = document.getElementById("addNewToDoItemForm");
@@ -26,10 +28,12 @@ let descriptionElement = document.getElementById("todoItemDescription");
 let dateElement = document.getElementById("todoItemDueDate");
 let projectElement = document.getElementById("todoItemProject");
 let priorityElement = document.getElementById("todoItemPriority");
+let newProjectTitleElement = document.getElementById("newProjectTitle");
 
 const todoLogic = (() => {
 
     let updatedToDoArray = JSON.parse(localStorage.getItem("todos"));
+    let updatedToDoProjectsArray = JSON.parse(localStorage.getItem("projects"));
 
     const updatingToDoArray = (changedToDoArray) => {
         localStorage.setItem("todos",JSON.stringify(changedToDoArray));
@@ -65,9 +69,16 @@ const todoLogic = (() => {
         updatingToDoArray(updatedToDoArray);
     }
 
-    const getCurrentProjects = () => {
-        let listofCurrentProjects = [...new Set(updatedToDoArray.map((item) => item.project))];
-        return(listofCurrentProjects);
+    const addNewProjectToArray = (newProject) => {
+        if (updatedToDoProjectsArray) {
+            updatedToDoProjectsArray.push(newProject);
+
+            updatingToDoProjects(updatedToDoProjectsArray);
+        }
+    }
+
+    const updatingToDoProjects = (changedProjectArray) => {
+        localStorage.setItem("projects", JSON.stringify(changedProjectArray));
     }
 
     return {
@@ -76,7 +87,8 @@ const todoLogic = (() => {
         updateToDoStatus,
         updateObjectinArray,
         updatedToDoArray,
-        getCurrentProjects
+        updatedToDoProjectsArray,
+        addNewProjectToArray
     }
 })();
 
@@ -197,8 +209,8 @@ todoScreen = (() => {
         for (let currentProjectList = (projectElement.options.length - 1); currentProjectList > 0; currentProjectList--) {
             projectElement.remove(currentProjectList);
         }
-        for (let projectIndex = 0; projectIndex < todoLogic.getCurrentProjects().length; projectIndex++) {
-            let projectTitle = todoLogic.getCurrentProjects()[projectIndex];
+        for (let projectIndex = 0; projectIndex < todoLogic.updatedToDoProjectsArray.length; projectIndex++) {
+            let projectTitle = todoLogic.updatedToDoProjectsArray[projectIndex];
             let projectOption = document.createElement("option");
             projectOption.textContent = projectTitle;
             projectOption.value = projectTitle;
@@ -277,5 +289,13 @@ newToDoButton.addEventListener("click", () => {
 const todoItemFormCancelButton = document.getElementById("addToDoCancelButton");
 todoItemFormCancelButton.addEventListener("click", () => {
     todoScreen.closeToDoForm();
+})
+
+const newToDoProjectButton = document.getElementById("addNewProjectButton");
+newToDoProjectButton.addEventListener("click", () => {
+    if (newProjectTitleElement.value) {
+        todoLogic.addNewProjectToArray(newProjectTitleElement.value);
+        newProjectTitleElement.value = "";
+    }
 })
 
