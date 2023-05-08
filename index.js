@@ -22,6 +22,7 @@
     localStorage.setItem("projects", JSON.stringify(projectArray));
 
 const todoItemsContainer = document.getElementById("todoItemsContainer");
+const todoProjectsContainer = document.getElementById("todoProjectsContainer")
 const newToDoItemForm = document.getElementById("addNewToDoItemForm");
 let titleElement = document.getElementById("todoItemTitle");
 let descriptionElement = document.getElementById("todoItemDescription");
@@ -79,6 +80,7 @@ const todoLogic = (() => {
 
     const updatingToDoProjects = (changedProjectArray) => {
         localStorage.setItem("projects", JSON.stringify(changedProjectArray));
+        todoScreen.render();
     }
 
     return {
@@ -94,11 +96,29 @@ const todoLogic = (() => {
 
 todoScreen = (() => {
 
-    const render = () => {
+    const render = (selectedProject) => {
         todoItemsContainer.innerHTML = "";
+        todoProjectsContainer.innerHTML = "";
 
         for(let todoIndex = 0; todoIndex < todoLogic.updatedToDoArray.length; todoIndex++){
-            createToDoItem(todoLogic.updatedToDoArray[todoIndex], todoIndex);
+            if (selectedProject) {
+                console.log(todoLogic.updatedToDoArray[todoIndex].project);
+                if (todoLogic.updatedToDoArray[todoIndex].project == selectedProject) {
+                    createToDoItem(todoLogic.updatedToDoArray[todoIndex], todoIndex);
+                }
+            } else {
+                createToDoItem(todoLogic.updatedToDoArray[todoIndex], todoIndex);
+            }
+        }
+
+        for (let projectIndex = 0; projectIndex < todoLogic.updatedToDoProjectsArray.length; projectIndex++) {
+            const todoProjectTitle = document.createElement("button");
+            todoProjectTitle.textContent = todoLogic.updatedToDoProjectsArray[projectIndex];
+            todoProjectTitle.onclick = function () {
+                console.log(todoProjectTitle.textContent);
+                todoScreen.render(todoProjectTitle.textContent);
+            }
+            todoProjectsContainer.appendChild(todoProjectTitle);         
         }
     }
 
@@ -299,3 +319,7 @@ newToDoProjectButton.addEventListener("click", () => {
     }
 })
 
+const allProjectsButton = document.getElementById("allProjectsButton");
+allProjectsButton.addEventListener("click", () => {
+    todoScreen.render();
+})

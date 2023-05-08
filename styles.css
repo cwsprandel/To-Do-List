@@ -5,7 +5,7 @@
 
 body {
     display: grid;
-    grid-template-columns: minmax(125px, 1fr) repeat(19, 1fr);
+    grid-template-columns: minmax(200px, 1fr) repeat(19, 1fr);
     grid-template-rows: minmax(75px, 1fr) repeat(19, 1fr);
     background-color: rgb(69, 69, 69);
     width: 100vw;
@@ -22,20 +22,45 @@ body {
 .sidebar {
     background-color: rgba(255, 96, 0, 0.5);
     display: grid;
+    grid-template-rows: 1.7fr repeat(14, 1fr);
+    grid-template-columns: minmax(121px, 1fr);
     grid-row: 2 / 21;
     grid-column: 1 / 2;
-    justify-content: center;
+    padding-left: 2px;
+    padding-right: 2px;
 }
 
-.sidebar button {
-    height: 2em;
+#todoProjectsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    grid-row: 3 / 12;
+    padding-left: 3px;
+}
+
+#todoProjectsContainer button {
+    background: none;
+    border: none;
+    align-self: baseline;
+    font-size: larger;
+    padding-left: 5px;
+}
+
+#addNewProjectButton {
+    margin: 2px;
+    grid-row: 13 / 14;
 }
 
 .sidebar input {
     background: none;
-    width: 95%;
-    border-color:rgb(69, 69, 69);
+    background-color:rgba(152, 152, 152, 0.3);
     border-radius: 5px;
+    margin: 2px;
+    grid-row: 14 / 15;
+}
+
+.sidebar input::placeholder {
+    color:rgb(255, 96, 0);
 }
 
 .todoArea {
